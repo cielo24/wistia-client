@@ -1,4 +1,3 @@
-import json
 import requests
 
 
@@ -7,7 +6,7 @@ class WistiaDataClientV1:
 
     def __init__(self, api_token):
         """
-        `api_token` can be acquired at https://XX.wistia.com/account/api
+        `api_token` can be acquired at https://XYZ.wistia.com/account/api
         """
         self.api_token = api_token
         self.default_headers = {"Authorization": f"Bearer {self.api_token}"}
