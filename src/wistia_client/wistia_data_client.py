@@ -98,3 +98,9 @@ class WistiaDataClientV1:
         Lists all available SRT files for this `media_hashed_id`
         """
         return self._request_get(f"medias/{media_hashed_id}/captions.json")
+
+    def delete_srt(self, media_hashed_id, language_code):
+        """
+        Deletes srt for the media `media_hashed_id` with this `language_code`.
+        """
+        return self._request_delete(f"medias/{media_hashed_id}/captions/{language_code}.json")
