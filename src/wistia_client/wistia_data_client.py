@@ -1,3 +1,4 @@
+from itertools import count
 import requests
 
 
@@ -38,7 +39,7 @@ class WistiaDataClientV1:
         if response.content:
             return response.json()
 
-    def get_project_medias(self, project_hashed_id, page=None, per_page=None):
+    def get_project_medias(self, project_hashed_id, page, per_page=100):
         """
         Gets the list of most recently added media to the project with this
         `project_hashed_id`.
@@ -53,6 +54,26 @@ class WistiaDataClientV1:
                 "sort_direction": "0",  # Descending
             },
         )
+
+    def get_all_project_medias(self, project_hashed_id, per_page=100):
+        """
+        Gets the list of all added media to the project with this
+        `project_hashed_id`, ordered by newest first.
+        """
+        
+        for i in count(1):
+            media_list = self.get_project_medias(
+                project_hashed_id,
+                page=i,
+                per_page=per_page,
+            )
+
+            yield from media_list
+
+            # If not enough media was fetched to fill a whole page, there will
+            # not be a next page.
+            if len(media_list) < per_page:
+                break
 
     def delete_media(self, media_hashed_id):
         """
